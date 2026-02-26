@@ -1,5 +1,5 @@
 #!/bin/bash
-mongosh admin <<EOF
+mongo admin <<EOF
 db.getSiblingDB("unifi").createUser({
   user: "unifi",
   pwd: "${MONGO_PASS}",

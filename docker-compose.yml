@@ -1,0 +1,128 @@
+services:
+  unifi-db:
+    image: mongo:7.0
+    container_name: unifi-db
+    restart: unless-stopped
+    environment:
+      - MONGO_PASS=${MONGO_PASS}
+    volumes:
+      - ./unifi-db:/data/db
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+
+  unifi:
+    image: lscr.io/linuxserver/unifi-network-application:latest
+    restart: unless-stopped
+    container_name: unifi
+    depends_on:
+      - unifi-db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/SaoPaulo
+      - MONGO_USER=unifi
+      - MONGO_PASS=${MONGO_PASS}
+      - MONGO_HOST=unifi-db
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=unifi
+      - MEM_LIMIT=1024 #optional
+      - MEM_STARTUP=1024 #optional
+    volumes:
+      - ./unifi:/config
+    ports:
+      - "172.16.0.254:8443:8443"
+      - "172.16.0.254:3478:3478/udp"
+      - "172.16.0.254:10001:10001/udp"
+      - "172.16.0.254:8080:8080"
+      #- "172.16.0.254:1900:1900/udp" #optional
+      - "172.16.0.254:8843:8843" #optional
+      - "172.16.0.254:8880:8880" #optional
+      - "172.16.0.254:6789:6789" #optional
+      - "172.16.0.254:5514:5514/udp" #optional
+#   frigate:
+#     container_name: frigate
+#     privileged: true # this may not be necessary for all setups
+#     restart: unless-stopped
+#     image: ghcr.io/blakeblackshear/frigate:0.12.1
+#     shm_size: "64mb" # 32mb per 1080p camera
+#     devices:
+#       - /dev/bus/usb:/dev/bus/usb # passes the USB Coral
+#       - /dev/video10:/dev/video10 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video11:/dev/video11 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video12:/dev/video12 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video13:/dev/video13 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video14:/dev/video14 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video15:/dev/video15 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video16:/dev/video16 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video17:/dev/video17 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video18:/dev/video18 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video19:/dev/video19 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video20:/dev/video20 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video21:/dev/video21 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video22:/dev/video22 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video23:/dev/video23 # passes Raspberry Pi 4 v4l hwaccel
+#       - /dev/video31:/dev/video31 # passes Raspberry Pi 4 v4l hwaccel
+#     volumes:
+#       - /etc/localtime:/etc/localtime:ro
+#       - ./frigate/config/:/config/:ro
+#       - /mnt/frigate/storage/:/media/frigate/
+#       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+#         target: /tmp/cache
+#         tmpfs:
+#           size: 1000000000
+# 
+#     ports:
+#       - "5000:5000" # frigate web ui
+#       - "1984:1984" # go2rtc web ui
+#       - "8555:8555" # go2rtc webrtc
+#       - "1935:1935" # RTMP feeds
+#     environment:
+#       FRIGATE_RTSP_PASSWORD: "Tuk776051_"
+# #    network_mode: host
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/config/:/mosquitto/config/
+      - ./mosquitto/log/:/mosquitto/log/
+      - ./mosquitto/data/:/mosquitto/data/
+#    ports:
+#      - "1883:1883"
+#      - "9001:9001"
+    network_mode: host
+
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/raspberrypi4-64-homeassistant:stable
+    volumes:
+      - ./homeassistant/config/:/config/
+      - ./frigate/db/:/db/
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+#    ports:
+#      - "8123:8123"
+  pihole:
+    container_name: pihole
+    privileged: true
+    network_mode: host
+    image: pihole/pihole:latest
+    environment:
+      TZ: 'America/SaoPaulo'
+      WEBPASSWORD: ${PIHOLE_WEBPASSWORD}
+    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+#    ports:
+#      - "172.16.0.253:53:53/tcp"
+#      - "172.16.0.253:53:53/udp"
+#      - "172.16.0.253:67:67/udp"
+#      - "172.16.0.253:80:80/tcp"
+    volumes:
+      - './pihole/etc:/etc/pihole'
+      - './pihole/dnsmasq.d:/etc/dnsmasq.d'
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+    restart: unless-stopped
+

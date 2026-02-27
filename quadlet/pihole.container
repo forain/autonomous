@@ -6,12 +6,11 @@ After=network-online.target local-fs.target
 Image=pihole/pihole:latest
 ContainerName=pihole
 Network=host
-Privileged=true
 AddCapability=NET_ADMIN
 Environment=TZ=America/SaoPaulo
-EnvironmentFile=.env
-Volume=./pihole/etc:/etc/pihole
-Volume=./pihole/dnsmasq.d:/etc/dnsmasq.d
+EnvironmentFile=/home/forain/Projects/autonomous/.env
+Volume=/home/forain/Projects/autonomous/pihole/etc:/etc/pihole
+Volume=/home/forain/Projects/autonomous/pihole/dnsmasq.d:/etc/dnsmasq.d
 
 [Service]
 WorkingDirectory=%h/Projects/autonomous

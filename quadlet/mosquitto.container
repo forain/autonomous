@@ -6,9 +6,9 @@ After=network-online.target local-fs.target
 Image=eclipse-mosquitto:2
 ContainerName=mosquitto
 Network=host
-Volume=./mosquitto/config:/mosquitto/config
-Volume=./mosquitto/log:/mosquitto/log
-Volume=./mosquitto/data:/mosquitto/data
+Volume=/home/forain/Projects/autonomous/mosquitto/config:/mosquitto/config
+Volume=/home/forain/Projects/autonomous/mosquitto/log:/mosquitto/log
+Volume=/home/forain/Projects/autonomous/mosquitto/data:/mosquitto/data
 
 [Service]
 WorkingDirectory=%h/Projects/autonomous

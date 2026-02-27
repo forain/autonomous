@@ -1,0 +1,19 @@
+[Unit]
+Description=Unifi MongoDB
+After=network-online.target local-fs.target
+
+[Container]
+Image=dburszty/mongodb-raspberrypi:7.0.14
+ContainerName=unifi-db
+EnvironmentFile=.env
+Volume=./unifi-db:/data/db
+Volume=./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+Network=unifi.network
+
+[Service]
+WorkingDirectory=%h/Projects/autonomous
+Restart=always
+TimeoutStartSec=120
+
+[Install]
+WantedBy=multi-user.target default.target

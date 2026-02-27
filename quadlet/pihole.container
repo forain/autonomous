@@ -8,6 +8,8 @@ ContainerName=pihole
 Network=host
 AddCapability=NET_ADMIN
 Environment=TZ=America/SaoPaulo
+Environment=INTERFACE=eth0
+Environment=DNSMASQ_LISTENING=single
 EnvironmentFile=/home/forain/Projects/autonomous/.env
 Volume=/home/forain/Projects/autonomous/pihole/etc:/etc/pihole
 Volume=/home/forain/Projects/autonomous/pihole/dnsmasq.d:/etc/dnsmasq.d

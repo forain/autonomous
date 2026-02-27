@@ -11,7 +11,7 @@ Volume=/home/forain/Projects/autonomous/mosquitto/log:/mosquitto/log
 Volume=/home/forain/Projects/autonomous/mosquitto/data:/mosquitto/data
 
 [Service]
-WorkingDirectory=%h/Projects/autonomous
+WorkingDirectory=/home/forain/Projects/autonomous
 Restart=always
 
 [Install]

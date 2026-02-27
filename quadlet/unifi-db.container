@@ -3,7 +3,7 @@ Description=Unifi MongoDB
 After=network-online.target local-fs.target
 
 [Container]
-Image=dburszty/mongodb-raspberrypi:7.0.14
+Image=docker.io/dburszty/mongodb-raspberrypi:7.0.14
 ContainerName=unifi-db
 EnvironmentFile=/home/forain/Projects/autonomous/.env
 Volume=/home/forain/Projects/autonomous/unifi-db:/data/db

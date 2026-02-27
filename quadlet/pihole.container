@@ -3,7 +3,7 @@ Description=Pi-hole DNS and Ad Blocker
 After=network-online.target local-fs.target
 
 [Container]
-Image=pihole/pihole:latest
+Image=docker.io/pihole/pihole:latest
 ContainerName=pihole
 Network=host
 AddCapability=NET_ADMIN

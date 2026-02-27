@@ -1,0 +1,21 @@
+[Unit]
+Description=Pi-hole DNS and Ad Blocker
+After=network-online.target local-fs.target
+
+[Container]
+Image=pihole/pihole:latest
+ContainerName=pihole
+Network=host
+Privileged=true
+AddCapability=NET_ADMIN
+Environment=TZ=America/SaoPaulo
+EnvironmentFile=.env
+Volume=./pihole/etc:/etc/pihole
+Volume=./pihole/dnsmasq.d:/etc/dnsmasq.d
+
+[Service]
+WorkingDirectory=%h/Projects/autonomous
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

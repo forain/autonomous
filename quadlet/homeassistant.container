@@ -1,0 +1,19 @@
+[Unit]
+Description=Home Assistant
+After=network-online.target local-fs.target
+
+[Container]
+Image=ghcr.io/home-assistant/raspberrypi4-64-homeassistant:stable
+ContainerName=homeassistant
+Network=host
+Privileged=true
+Volume=./homeassistant/config:/config
+Volume=./frigate/db:/db
+Volume=/etc/localtime:/etc/localtime:ro
+
+[Service]
+WorkingDirectory=%h/Projects/autonomous
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

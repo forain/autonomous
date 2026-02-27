@@ -1,0 +1,18 @@
+[Unit]
+Description=Eclipse Mosquitto MQTT Broker
+After=network-online.target local-fs.target
+
+[Container]
+Image=eclipse-mosquitto:2
+ContainerName=mosquitto
+Network=host
+Volume=./mosquitto/config:/mosquitto/config
+Volume=./mosquitto/log:/mosquitto/log
+Volume=./mosquitto/data:/mosquitto/data
+
+[Service]
+WorkingDirectory=%h/Projects/autonomous
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

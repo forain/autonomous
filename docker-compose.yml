@@ -112,7 +112,7 @@ services:
     image: pihole/pihole:latest
     environment:
       TZ: 'America/SaoPaulo'
-      WEBPASSWORD: ${PIHOLE_WEBPASSWORD}
+      WEBPASSWORD: ${WEBPASSWORD}
     # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
 #    ports:
 #      - "172.16.0.253:53:53/tcp"

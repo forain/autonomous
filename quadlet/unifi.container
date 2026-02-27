@@ -16,8 +16,8 @@ Environment=MONGO_DBNAME=unifi
 Environment=MONGO_AUTHSOURCE=unifi
 Environment=MEM_LIMIT=1024
 Environment=MEM_STARTUP=1024
-EnvironmentFile=.env
-Volume=./unifi:/config
+EnvironmentFile=/home/forain/Projects/autonomous/.env
+Volume=/home/forain/Projects/autonomous/unifi:/config
 Network=unifi.network
 PublishPort=8443:8443
 PublishPort=3478:3478/udp

@@ -5,9 +5,9 @@ After=network-online.target local-fs.target
 [Container]
 Image=dburszty/mongodb-raspberrypi:7.0.14
 ContainerName=unifi-db
-EnvironmentFile=.env
-Volume=./unifi-db:/data/db
-Volume=./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+EnvironmentFile=/home/forain/Projects/autonomous/.env
+Volume=/home/forain/Projects/autonomous/unifi-db:/data/db
+Volume=/home/forain/Projects/autonomous/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
 Network=unifi.network
 
 [Service]

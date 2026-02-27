@@ -42,10 +42,10 @@ Copy (or symlink) the unit files to the systemd directory and start the services
 ```bash
 sudo cp quadlet/* /etc/containers/systemd/
 sudo systemctl daemon-reload
-sudo systemctl enable --now unifi-db.service unifi.service mosquitto.service homeassistant.service pihole.service
+sudo systemctl start unifi-db.service unifi.service mosquitto.service homeassistant.service pihole.service
 ```
 
-The unit files use `WorkingDirectory=%h/Projects/autonomous` (where `%h` is the home directory of the user running the services) to resolve relative volume paths, so adjust this if the repo is cloned elsewhere.
+The unit files use absolute paths hardcoded to `/home/forain/Projects/autonomous`. If the repo is cloned elsewhere, update `WorkingDirectory` and all `Volume=` and `EnvironmentFile=` paths in each `.container` file accordingly.
 
 On first start, `init-mongo.sh` runs automatically inside the `unifi-db` container to create the UniFi database user. This only happens when `./unifi-db` is empty.
 

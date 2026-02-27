@@ -12,7 +12,7 @@ Volume=/home/forain/Projects/autonomous/frigate/db:/db
 Volume=/etc/localtime:/etc/localtime:ro
 
 [Service]
-WorkingDirectory=%h/Projects/autonomous
+WorkingDirectory=/home/forain/Projects/autonomous
 Restart=always
 
 [Install]

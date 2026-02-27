@@ -13,7 +13,7 @@ Volume=/home/forain/Projects/autonomous/pihole/etc:/etc/pihole
 Volume=/home/forain/Projects/autonomous/pihole/dnsmasq.d:/etc/dnsmasq.d
 
 [Service]
-WorkingDirectory=%h/Projects/autonomous
+WorkingDirectory=/home/forain/Projects/autonomous
 Restart=always
 
 [Install]

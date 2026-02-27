@@ -11,7 +11,7 @@ Volume=/home/forain/Projects/autonomous/init-mongo.sh:/docker-entrypoint-initdb.
 Network=unifi.network
 
 [Service]
-WorkingDirectory=%h/Projects/autonomous
+WorkingDirectory=/home/forain/Projects/autonomous
 Restart=always
 TimeoutStartSec=120
 

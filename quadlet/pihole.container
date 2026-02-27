@@ -6,7 +6,7 @@ After=network-online.target local-fs.target
 Image=docker.io/pihole/pihole:latest
 ContainerName=pihole
 Network=host
-AddCapability=NET_ADMIN
+AddCapability=NET_ADMIN NET_RAW
 Environment=TZ=America/SaoPaulo
 Environment=INTERFACE=eth0
 Environment=DNSMASQ_LISTENING=single

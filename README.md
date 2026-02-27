@@ -1,6 +1,6 @@
 # Home Automation Stack
 
-Docker Compose stack for a Raspberry Pi home server running:
+Stack for a Raspberry Pi home server running:
 
 - **UniFi Network Application** — network controller for Ubiquiti devices
 - **MongoDB** — database backend for UniFi (Raspberry Pi-compatible build)
@@ -11,7 +11,7 @@ Docker Compose stack for a Raspberry Pi home server running:
 ## Requirements
 
 - Raspberry Pi 4 (aarch64)
-- Docker and Docker Compose
+- Docker Compose **or** Podman with Quadlet support (Podman 4.4+)
 
 ## Setup
 
@@ -24,13 +24,28 @@ Docker Compose stack for a Raspberry Pi home server running:
 2. Create a `.env` file (not committed):
    ```env
    MONGO_PASS=<strong-password>
-   PIHOLE_WEBPASSWORD=<pihole-admin-password>
+   WEBPASSWORD=<pihole-admin-password>
    ```
 
-3. Start all services:
-   ```bash
-   docker compose up -d
-   ```
+3. Start all services using either Docker Compose or Podman Quadlet:
+
+### Docker Compose
+
+```bash
+docker compose up -d
+```
+
+### Podman Quadlet
+
+Copy (or symlink) the unit files to the systemd directory and start the services:
+
+```bash
+sudo cp quadlet/* /etc/containers/systemd/
+sudo systemctl daemon-reload
+sudo systemctl enable --now unifi-db.service unifi.service mosquitto.service homeassistant.service pihole.service
+```
+
+The unit files use `WorkingDirectory=%h/Projects/autonomous` (where `%h` is the home directory of the user running the services) to resolve relative volume paths, so adjust this if the repo is cloned elsewhere.
 
 On first start, `init-mongo.sh` runs automatically inside the `unifi-db` container to create the UniFi database user. This only happens when `./unifi-db` is empty.
 
@@ -49,7 +64,13 @@ Mosquitto listens on the host network (port 1883).
 If the UniFi database needs to be recreated from scratch:
 
 ```bash
+# Docker Compose
 docker compose down
 sudo rm -rf ./unifi-db
 docker compose up -d
+
+# Podman Quadlet
+sudo systemctl stop unifi.service unifi-db.service
+sudo rm -rf ./unifi-db
+sudo systemctl start unifi-db.service unifi.service
 ```

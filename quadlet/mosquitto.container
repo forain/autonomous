@@ -3,7 +3,7 @@ Description=Eclipse Mosquitto MQTT Broker
 After=network-online.target local-fs.target
 
 [Container]
-Image=eclipse-mosquitto:2
+Image=docker.io/library/eclipse-mosquitto:2
 ContainerName=mosquitto
 Network=host
 Volume=/home/forain/Projects/autonomous/mosquitto/config:/mosquitto/config

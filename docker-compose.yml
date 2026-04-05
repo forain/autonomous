@@ -105,6 +105,19 @@ services:
     network_mode: host
 #    ports:
 #      - "8123:8123"
+  duckdns:
+    container_name: duckdns
+    image: lscr.io/linuxserver/duckdns:latest
+    restart: unless-stopped
+    environment:
+      - TZ=America/SaoPaulo
+      - SUBDOMAINS=anvara
+      - TOKEN=${TOKEN}
+      - UPDATE_IP=ipv4
+      - LOG_FILE=true
+    volumes:
+      - ./duckdns:/config
+
   pihole:
     container_name: pihole
     privileged: true

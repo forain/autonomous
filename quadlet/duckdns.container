@@ -1,0 +1,20 @@
+[Unit]
+Description=DuckDNS Dynamic DNS Updater
+After=network-online.target
+
+[Container]
+Image=lscr.io/linuxserver/duckdns:latest
+ContainerName=duckdns
+Environment=TZ=America/SaoPaulo
+Environment=SUBDOMAINS=anvara
+Environment=UPDATE_IP=ipv4
+Environment=LOG_FILE=true
+EnvironmentFile=/home/forain/Projects/autonomous/.env
+Volume=/home/forain/Projects/autonomous/duckdns:/config
+
+[Service]
+WorkingDirectory=/home/forain/Projects/autonomous
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target
